@@ -241,7 +241,7 @@ main{padding:16px 24px 40px;position:relative;z-index:1}
 
 /* 트랙 목록 */
 .grid.list{display:block}
-.listhead,.rowi{display:grid;grid-template-columns:16px minmax(200px,6fr) minmax(120px,4fr) minmax(90px,2fr) minmax(100px,2fr) 96px;gap:16px;align-items:center;padding:0 16px}
+.listhead,.rowi{display:grid;grid-template-columns:16px minmax(200px,6fr) minmax(120px,4fr) minmax(90px,2fr) minmax(100px,2fr) 190px;gap:16px;align-items:center;padding:0 16px}
 .listhead{height:36px;border-bottom:1px solid var(--line);margin-bottom:16px;font-size:14px;color:var(--sub);position:sticky;top:0;background:var(--base);z-index:4;margin-left:-24px;margin-right:-24px;padding:0 40px}
 .listhead .r{text-align:right}
 .rowi{height:56px;border-radius:4px;cursor:pointer}
@@ -803,6 +803,163 @@ input:focus-visible,textarea:focus-visible,select:focus-visible{outline:none}
 .pe-name span{font-size:12.5px;color:#eee;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .rowi .rt span.srcbadge,.srcbadge{display:inline-block!important;width:auto;font-size:9px;padding:1px 5px;margin-right:4px;border-radius:2px;background:#b3b3b3;color:#000;font-weight:800;display:inline-block;vertical-align:1px}
 
+/* =====================================================================
+   RE87 IDENTITY — "충전 게이지" 디자인 언어
+   · 87% 충전 링(로고·RE 점수) · 깎인 모서리(chamfer) · 모노 숫자
+   · 은은한 계측 격자 · 볼트(형광 연두) 하이라이트
+   ===================================================================== */
+:root{--mono:"JetBrains Mono","SFMono-Regular",ui-monospace,Menlo,Consolas,monospace;--volt:color-mix(in srgb,var(--green) 50%,#f2ff6b);--base:#0e110f;--el:#151916;--el2:#1c211d;--hl:#262c27;--line:rgba(190,255,210,.09);--cut:12px}
+body{background:#050706}
+/* 로고: 87% 충전 링 */
+.brand-disc{background:conic-gradient(var(--green) 0 87%,#2a302b 87% 100%)!important;box-shadow:none!important;-webkit-mask:radial-gradient(circle,transparent 52%,#000 54%);mask:radial-gradient(circle,transparent 52%,#000 54%);animation:discCharge 1.4s cubic-bezier(.2,.8,.2,1) both}
+.brand-disc::after{display:none!important}
+.brand{position:relative}
+.brand::after{content:"";position:absolute;left:11px;top:50%;width:10px;height:10px;margin-top:-5px;background:var(--green);clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);box-shadow:0 0 12px var(--green)}
+@keyframes discCharge{from{filter:saturate(0) brightness(.6)}to{filter:none}}
+.logo{font-family:var(--mono)!important;letter-spacing:-.04em}
+.logo em{color:var(--volt)!important;font-style:normal}
+/* 패널: 깎인 모서리 + 얇은 계측선 */
+.side,.mainwrap,.rightp{border-radius:4px!important;clip-path:polygon(0 0,calc(100% - var(--cut)) 0,100% var(--cut),100% 100%,var(--cut) 100%,0 calc(100% - var(--cut)));box-shadow:inset 0 0 0 1px var(--line)}
+.mainscroll{background-image:linear-gradient(rgba(190,255,210,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(190,255,210,.025) 1px,transparent 1px);background-size:40px 40px;background-position:-1px -1px}
+/* 섹션 번호 */
+main{counter-reset:sec}
+.shelf-h h2::before{counter-increment:sec;content:counter(sec,decimal-leading-zero);font-family:var(--mono);font-size:12px;font-weight:700;color:#000;background:var(--green);padding:2px 6px;margin-right:12px;vertical-align:5px;clip-path:polygon(0 0,100% 0,100% 70%,80% 100%,0 100%)}
+.shelf-h>button{font-family:var(--mono);font-size:12px!important;letter-spacing:.04em;text-transform:uppercase}
+.ph-kind{font-family:var(--mono);font-size:12px!important;letter-spacing:.12em;text-transform:uppercase;color:var(--volt);display:flex;align-items:center;gap:8px}
+.ph-kind::before{content:"";width:22px;height:6px;background:repeating-linear-gradient(90deg,var(--volt) 0 4px,transparent 4px 6px)}
+/* 커버·카드: 깎인 모서리 */
+.cimg,.rc,.tc,.pcov,.pc,.rc2,.lc:not(.round),.bt-art{border-radius:2px!important;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px))}
+.rowi .rc,.lc:not(.round){clip-path:polygon(0 0,calc(100% - 6px) 0,100% 6px,100% 100%,6px 100%,0 calc(100% - 6px))}
+.card{border-radius:2px!important;position:relative}
+.card::before{content:"";position:absolute;left:0;top:12px;bottom:12px;width:2px;background:var(--green);transform:scaleY(0);transform-origin:top;transition:transform .25s}
+.card:hover::before,.card.playing::before{transform:scaleY(1)}
+.tile{border-radius:2px!important;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,0 100%)}
+/* 버튼: 원형 대신 깎인 육각 */
+.bigplay,.playbtn,.tp{border-radius:0!important;clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%)}
+.bigplay{width:60px!important;background:linear-gradient(135deg,var(--volt),var(--green))!important}
+.playbtn{background:linear-gradient(135deg,var(--volt),var(--green))!important}
+.topbtn{background:var(--green)!important;color:#000!important;border-radius:2px!important;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));font-family:inherit;letter-spacing:-.01em}
+.topbtn:hover{background:var(--volt)!important}
+.chip{border-radius:2px!important;clip-path:polygon(0 0,calc(100% - 7px) 0,100% 7px,100% 100%,0 100%)}
+.chip.on{background:var(--green)!important;color:#000!important}
+.createbtn{border-radius:2px!important;font-size:13px}
+.createbtn.ghost{background:transparent!important;box-shadow:inset 0 0 0 1px var(--line)}
+.createbtn.ghost:hover{box-shadow:inset 0 0 0 1px var(--green);color:var(--green)}
+.libhead{gap:6px;flex-wrap:wrap}
+.libhead>div,.libhead .createbtn{flex:none}
+.libitem{border-radius:2px!important}
+.libitem.on{box-shadow:inset 3px 0 0 var(--volt)!important}
+.libtitle{font-family:var(--mono);font-size:11px!important;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)!important}
+.libitem.plnew .lc{background:transparent!important;box-shadow:inset 0 0 0 1px dashed var(--line);border:1px dashed #3d463f;display:flex;align-items:center;justify-content:center;color:var(--green)}
+.lc.pl{display:grid;grid-template-columns:1fr 1fr;overflow:hidden;background:#222}
+.lc.pl.one{display:flex;align-items:center;justify-content:center;color:#fff}
+.lc.pl>div,.lc.pl img{width:100%;height:100%;object-fit:cover}
+.lc.pl>div>*{width:100%;height:100%}
+/* 숫자는 모노 */
+.rd,.rowi .num,#pcur,#pdur,.ph-meta .d,.cnt,.hint .n,.tour-n,.renum{font-family:var(--mono);font-variant-numeric:tabular-nums}
+#pcur,#pdur{font-size:11px!important}
+.listhead{font-family:var(--mono);font-size:11px!important;letter-spacing:.1em;text-transform:uppercase}
+/* 재생바: 충전 라인 */
+#player{border-top:1px solid rgba(var(--grgb),.18);background:linear-gradient(180deg,#070908,#000)!important}
+#player::before{content:"";position:absolute;left:0;right:0;top:-1px;height:1px;background:linear-gradient(90deg,transparent,var(--green) 30%,var(--volt) 50%,var(--green) 70%,transparent);opacity:.55}
+.helpbtn{width:32px;height:32px;padding:0;border-radius:50%;background:transparent;color:var(--sub);box-shadow:inset 0 0 0 1.5px #3a423c;font-family:var(--mono);font-weight:800;font-size:15px;flex:none}
+.helpbtn:hover{color:#000;background:var(--green);box-shadow:none;transform:rotate(-8deg) scale(1.06)}
+/* ---------- RE 점수 게이지 ---------- */
+.reg{position:relative;display:inline-flex;align-items:center;justify-content:center;width:var(--sz);height:var(--sz);flex:none}
+.reg svg{position:absolute;inset:0;width:100%;height:100%}
+.reg circle{fill:none;stroke-width:3}
+.reg .tr{stroke:rgba(255,255,255,.12)}
+.reg .fl{stroke:var(--green);stroke-linecap:butt;transition:stroke-dasharray .6s}
+.reg b{font-family:var(--mono);font-size:calc(var(--sz)*.32);font-weight:800;color:#fff;letter-spacing:-.04em}
+.reg.none b{color:var(--dim)}
+.reg.hot .fl{stroke:var(--volt);filter:drop-shadow(0 0 3px var(--volt))}
+.reg.hot b{color:var(--volt)}
+.cre{position:absolute;top:6px;left:6px;z-index:2;background:rgba(6,9,7,.78);backdrop-filter:blur(6px);border-radius:50%;padding:2px;display:flex}
+.cre .reg.none{display:none}
+.cre:has(.reg.none){display:none}
+.rowi .rend{gap:2px!important}.rowi .rend .lk{width:26px!important;height:26px!important}.rowi .rend .reg{margin-left:4px}
+.mlib button{border-radius:2px!important;clip-path:polygon(0 0,calc(100% - 7px) 0,100% 7px,100% 100%,0 100%)}
+.mlib button.on{background:var(--green)!important;color:#000!important}
+.dre{position:absolute;right:28px;top:28px;display:flex;flex-direction:column;align-items:center;gap:4px;z-index:2}
+.dre span{font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:var(--sub)}
+.dre .reg.hot+span{color:var(--volt)}
+@media(max-width:820px){.dre{top:16px;right:16px}}
+.rowi .rend .lk[disabled]{opacity:.15!important}
+/* ---------- 다운로드 리스트 ---------- */
+.dlall-l{font-family:var(--mono);font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--volt);margin-left:-8px}
+.dlall[disabled]{filter:grayscale(.7);animation:dlpulse 1s infinite}
+@keyframes dlpulse{50%{opacity:.6}}
+.dlprog{position:relative;height:28px;margin:0 0 14px;background:#141815;overflow:hidden;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%)}
+.dlprog i{position:absolute;inset:0 auto 0 0;background:repeating-linear-gradient(90deg,var(--green) 0 10px,var(--volt) 10px 12px);transition:width .4s}
+.dlprog span{position:relative;font-family:var(--mono);font-size:12px;line-height:28px;padding:0 12px;color:#fff;text-shadow:0 1px 3px #000;white-space:nowrap}
+.dlhint{font-size:12.5px;color:var(--sub);margin:-4px 0 12px;display:flex;align-items:center;gap:6px}
+.dlhint .i{color:var(--green)}
+.esub{display:block;font-size:14px;font-weight:400;color:var(--sub);margin-top:6px;line-height:1.6}
+.outline.on{color:var(--green);box-shadow:inset 0 0 0 1px var(--green)}
+/* ---------- 플레이리스트 ---------- */
+.plcard .cimg .pcov{width:100%;height:auto;aspect-ratio:1;box-shadow:none}
+.plcard .pcov.one{font-size:0}
+.plowner{cursor:pointer}.plowner:hover{text-decoration:underline}
+.plmenu{position:fixed;z-index:120;width:240px;max-height:340px;overflow:auto;background:#1b201c;padding:6px;box-shadow:0 16px 40px rgba(0,0,0,.6),inset 0 0 0 1px var(--line);clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%);animation:fadeUp .15s ease}
+.plmenu .pmh{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);padding:8px 10px 6px}
+.plmenu button{display:flex;align-items:center;gap:10px;width:100%;padding:8px 10px;border-radius:2px;background:none;color:#fff;font-size:14px;text-align:left;justify-content:flex-start}
+.plmenu button:hover{background:#2a312c}
+.plmenu .pmc{width:14px;height:14px;flex:none;clip-path:polygon(0 0,70% 0,100% 30%,100% 100%,0 100%)}
+.plmenu .pmn{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.plmenu .pmk{color:var(--green);display:flex}
+.plmenu .pme{padding:8px 10px;color:var(--sub);font-size:13px}
+.plmenu hr{border:0;border-top:1px solid var(--line);margin:4px 0}
+@keyframes fadeUp{from{opacity:0;transform:translateY(4px)}}
+.pl-box{max-width:460px}
+.pl-box .fl{display:block;font-size:13px;font-weight:700;margin:14px 0 6px}
+.pl-box input:not([type=checkbox]),.pl-box textarea{width:100%}
+.plpub{display:flex;gap:10px;align-items:flex-start;margin-top:16px;cursor:pointer;font-size:14px}
+.plpub input{margin-top:3px;accent-color:var(--green);width:16px;height:16px}
+.pl-act{display:flex;gap:8px;margin-top:20px;align-items:center}
+.plsug{margin:32px 0 8px}
+.plsug h3{font-size:16px;margin:0 0 8px}
+.plsug-r{display:flex;align-items:center;gap:12px;padding:6px 8px;border-radius:2px}
+.plsug-r:hover{background:rgba(255,255,255,.05)}
+.plsug-r .rc{width:40px;height:40px;flex:none;overflow:hidden}
+.plsug-r .rc>*{width:100%;height:100%}
+.plsug-r .rt{flex:1;min-width:0;display:flex;flex-direction:column}
+.plsug-r .rt b{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.plsug-r .rt span{font-size:12.5px;color:var(--sub)}
+/* ---------- 사용법 가이드 ---------- */
+.tour{position:fixed;inset:0;z-index:300}
+.tour-hole{position:fixed;border-radius:6px;box-shadow:0 0 0 9999px rgba(3,6,4,.78),0 0 0 2px var(--volt),0 0 28px rgba(var(--grgb),.55);transition:all .35s cubic-bezier(.3,.8,.3,1);pointer-events:none}
+.tour-hole::after{content:"";position:absolute;inset:-8px;border:1px dashed rgba(var(--grgb),.6);border-radius:9px;animation:tourPulse 1.6s ease-in-out infinite}
+@keyframes tourPulse{50%{inset:-14px;opacity:.2}}
+.tour-hole.none{left:50%!important;top:50%!important;width:0!important;height:0!important;box-shadow:0 0 0 9999px rgba(3,6,4,.84)}
+.tour-hole.none::after{display:none}
+.tour-card{position:fixed;width:min(400px,calc(100vw - 24px));max-height:calc(100vh - 24px);overflow:auto;background:linear-gradient(160deg,#18201a,#0f1310);color:#fff;padding:0 22px 18px;box-shadow:0 24px 60px rgba(0,0,0,.7),inset 0 0 0 1px rgba(var(--grgb),.3);clip-path:polygon(0 0,calc(100% - 16px) 0,100% 16px,100% 100%,16px 100%,0 calc(100% - 16px));transition:left .35s cubic-bezier(.3,.8,.3,1),top .35s cubic-bezier(.3,.8,.3,1)}
+.tour-card.center{left:50%!important;top:50%!important;transform:translate(-50%,-50%);width:min(520px,calc(100vw - 24px))}
+.tour-card.pop{animation:tourIn .35s ease}
+.tour-card.center.pop{animation:tourInC .35s ease}
+@keyframes tourIn{from{opacity:0;translate:0 8px}}
+@keyframes tourInC{from{opacity:0;transform:translate(-50%,-46%)}}
+.tour-bar{height:4px;margin:0 -22px 16px;background:#232a25}
+.tour-bar i{display:block;height:100%;background:repeating-linear-gradient(90deg,var(--green) 0 14px,var(--volt) 14px 16px);transition:width .35s}
+.tour-h{display:flex;gap:12px;align-items:center;margin-bottom:10px}
+.tour-ic{font-size:26px;width:46px;height:46px;flex:none;display:flex;align-items:center;justify-content:center;background:rgba(var(--grgb),.14);clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%)}
+.tour-n{font-size:11px;color:var(--volt);letter-spacing:.1em}
+.tour-h h3{margin:2px 0 0;font-size:19px;letter-spacing:-.02em}
+.tour-b{font-size:14px;line-height:1.65;color:#d6ded8}
+.tour-b p{margin:0 0 8px}
+.tour-b ul{margin:0 0 8px;padding-left:18px}
+.tour-b li{margin:3px 0}
+.tour-b li::marker{color:var(--green)}
+.tour-b b{color:#fff}
+.tour-b .gk{font-size:13px;color:var(--sub);background:rgba(255,255,255,.04);padding:8px 10px;border-left:2px solid var(--green)}
+.tour-b kbd{font-size:11px;padding:1px 6px;min-width:0}
+.tour-f{display:flex;gap:8px;align-items:center;margin-top:14px}
+.tour-skip{background:none;color:var(--sub);font-size:13px;padding:6px 4px}
+.tour-skip:hover{color:#fff;text-decoration:underline}
+body.touring #player,body.touring .topbar{z-index:auto}
+@media(max-width:700px){.tour-card:not(.center){left:12px!important;right:12px;top:auto!important;bottom:12px;width:auto}}
+@media(prefers-reduced-motion:reduce){.tour-hole,.tour-card{transition:none}.tour-hole::after{animation:none}}
+body.reduce .tour-hole::after{animation:none}
+
 /* ===== 반응형 ===== */
 .tile .gt,.np-q .gt,.pcover .gt,.rowi .gt,.btile .gt,.pcov .gt{display:none!important}
 .mlib{display:none;gap:8px;overflow-x:auto;padding:0 0 8px;scrollbar-width:none}
@@ -811,7 +968,7 @@ input:focus-visible,textarea:focus-visible,select:focus-visible{outline:none}
 .rowi .rt span.tag{display:inline-block;vertical-align:1px}
 #detailModal .box button.primary{width:auto}
 
-@media(max-width:1300px){:root{--sidew:280px;--rightw:300px}.listhead,.rowi{grid-template-columns:16px minmax(180px,6fr) minmax(110px,4fr) 96px}.listhead .h3,.listhead .h4,.rowi .rb2,.rowi .rd{display:none}}
+@media(max-width:1300px){:root{--sidew:280px;--rightw:300px}.listhead,.rowi{grid-template-columns:16px minmax(180px,6fr) minmax(110px,4fr) 176px}.listhead .h3,.listhead .h4,.rowi .rb2,.rowi .rd{display:none}}
 @media(max-width:1100px){.app{grid-template-columns:var(--sidew) minmax(0,1fr) 0}}
 @media(max-width:820px){
   :root,body.size-s,body.size-m,body.size-l{--sidew:0px;--playerh:120px;--toph:auto}
@@ -822,7 +979,7 @@ input:focus-visible,textarea:focus-visible,select:focus-visible{outline:none}
   main{padding:8px 14px 30px}.phero{margin:-8px -14px 0;padding:20px 14px}.pfade{margin:0 -14px;padding:20px 14px 0}
   .grid{grid-template-columns:repeat(2,1fr)}.card{padding:8px}
   .tiles{grid-template-columns:1fr 1fr}
-  .listhead{display:none}.listhead,.rowi{grid-template-columns:1fr 70px;padding:0 4px}
+  .listhead{display:none}.listhead,.rowi{grid-template-columns:minmax(0,1fr) auto;padding:0 4px}.rowi .rend{gap:2px}
   .rowi .rn,.rowi .rl{display:none}
   .phero,.dhead{flex-direction:column;align-items:flex-start}.pcov,.dcov{width:160px;height:160px}
   #player{grid-template-columns:1fr auto;grid-template-rows:auto auto;padding:8px 10px;gap:6px}
@@ -876,6 +1033,7 @@ input:focus-visible,textarea:focus-visible,select:focus-visible{outline:none}
   </div>
   <div class="topright">
     <button class="topbtn" data-act="openUpload">노래 추천하기</button>
+    <button class="helpbtn" id="helpBtn" data-act="guide" title="사용법 가이드">?</button>
     <span id="userArea"></span>
     <div class="umenu hidden" id="umenu"></div>
   </div>
@@ -886,6 +1044,7 @@ input:focus-visible,textarea:focus-visible,select:focus-visible{outline:none}
   <aside class="side">
     <div class="libhead">
       <h3><svg class="i" viewBox="0 0 24 24" style="--s:24px"><path d="M4 3h2v18H4zM9 3h2v18H9zm5.3.7 1.9-.6 5.1 17.3-1.9.6z"/></svg>내 라이브러리</h3>
+      <button class="createbtn ghost" id="newPlBtn" data-act="newPl" title="새 플레이리스트 만들기"><svg class="i" viewBox="0 0 24 24" style="--s:16px"><path d="M3 5h12v2H3zm0 5h12v2H3zm0 5h8v2H3zm14-3h2v3h3v2h-3v3h-2v-3h-3v-2h3z"/></svg>플레이리스트</button>
       <button class="createbtn" data-act="openUpload"><svg class="i" viewBox="0 0 24 24" style="--s:16px"><path d="M11 4h2v7h7v2h-7v7h-2v-7H4v-2h7z"/></svg>추천하기</button>
     </div>
     <div class="libchips" id="libChips"></div>
@@ -1037,6 +1196,30 @@ input:focus-visible,textarea:focus-visible,select:focus-visible{outline:none}
   </div>
 </div>
 
+<!-- 플레이리스트 편집 -->
+<div class="modal hidden" id="plModal">
+  <div class="box pl-box">
+    <button class="close" data-close="plModal">✕</button>
+    <h2 id="plTitle">새 플레이리스트</h2>
+    <label class="fl">이름</label><input id="plName" maxlength="40" placeholder="예: 새벽 2시 보카로">
+    <label class="fl">설명 <span class="hint">(선택)</span></label><textarea id="plDesc" maxlength="200" rows="3" placeholder="어떤 플레이리스트인지 적어 주세요"></textarea>
+    <label class="fl">색</label><div class="colors" id="plColors"></div>
+    <label class="plpub"><input type="checkbox" id="plPublic" checked> <span><b>공개</b><br><span class="hint">친구들이 라이브러리와 내 프로필에서 볼 수 있어요</span></span></label>
+    <div class="err" id="plErr"></div>
+    <div class="pl-act"><button class="outline danger hidden" id="plDel" data-act="plDel">삭제</button><span style="flex:1"></span><button class="outline" data-close="plModal">취소</button><button class="primary" id="plSave" data-act="plSave">저장</button></div>
+  </div>
+</div>
+<div class="plmenu hidden" id="plmenu"></div>
+<!-- 사용법 가이드 -->
+<div class="tour hidden" id="tour">
+  <div class="tour-hole" id="tourHole"></div>
+  <div class="tour-card" id="tourCard" role="dialog" aria-live="polite">
+    <div class="tour-bar"><i id="tourBar"></i></div>
+    <div class="tour-h"><span class="tour-ic" id="tourIc"></span><div><span class="tour-n" id="tourN"></span><h3 id="tourT"></h3></div></div>
+    <div class="tour-b" id="tourB"></div>
+    <div class="tour-f"><button class="tour-skip" data-tour="skip">건너뛰기</button><span style="flex:1"></span><button class="outline sm" id="tourPrev" data-tour="-1">← 이전</button><button class="primary sm" id="tourNext" data-tour="1">다음 →</button></div>
+  </div>
+</div>
 <div id="toast" class="hidden"></div>
 
 <script>
@@ -1156,6 +1339,13 @@ function makeLocalBackend(){
       user=pub(u);
     },
     uploadAvatar:blob=>new Promise(res=>{const r=new FileReader();r.onload=()=>res(r.result);r.readAsDataURL(blob)}),
+    async listPlaylists(){const me=user;return get('playlists',[]).filter(p=>p.is_public||(me&&p.user_id===me.id))},
+    async savePlaylist(p){if(!user)throw new Error('로그인이 필요해요');const l=get('playlists',[]);const now=new Date().toISOString();
+      if(p.id!=null){const o=l.find(x=>x.id===p.id);if(!o||o.user_id!==user.id)throw new Error('내 플레이리스트만 바꿀 수 있어요');Object.assign(o,{name:p.name,description:p.description,color:p.color,is_public:p.is_public,song_ids:p.song_ids,updated_at:now});set('playlists',l);return o}
+      const n={id:Math.max(0,...l.map(x=>x.id))+1,user_id:user.id,name:p.name,description:p.description,color:p.color,is_public:p.is_public,song_ids:p.song_ids||[],created_at:now,updated_at:now};l.push(n);set('playlists',l);return n},
+    async deletePlaylist(id){set('playlists',get('playlists',[]).filter(x=>!(x.id===id&&user&&x.user_id===user.id)))},
+    async markGuide(){const users=get('users',[]);const u=users.find(x=>x.id===user.id);if(u){u.guide_done=true;set('users',users);user=pub(u)}},
+    async resetGuide(){const users=get('users',[]);const u=users.find(x=>x.id===user.id);if(u){u.guide_done=false;set('users',users);user=pub(u)}},
     async listAll(){return {songs:get('songs',[]),reviews:get('reviews',[]),likes:get('likes',[]),profiles:get('users',[]).map(pub)}},
     async createSong(data,file){
       const songs=get('songs',[]);const id=nextId('songs');
@@ -1196,6 +1386,7 @@ function makeLocalBackend(){
 /* =========================================================
    데이터 계층 2: 온라인 모드 (Supabase)
    ========================================================= */
+const plLocalStore={get(){try{return JSON.parse(localStorage.getItem('re87_playlists'))||[]}catch(e){return[]}},set(l){localStorage.setItem('re87_playlists',JSON.stringify(l))}};
 function makeSupabaseBackend(){
   let user=null;
   const sb=window.supabase.createClient(CONFIG.SUPABASE_URL,CONFIG.SUPABASE_ANON_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:false,storage:window.localStorage}});
@@ -1230,6 +1421,23 @@ function makeSupabaseBackend(){
     signOut:wrap(async()=>{await sb.auth.signOut();user=null}),
     updateProfile:wrap(async(f)=>{ok(await sb.from('profiles').update(f).eq('id',user.id));user={...user,...f}}),
     uploadAvatar:wrap(async(blob)=>{const path=`${user.id}/avatar_${Date.now()}.jpg`;ok(await sb.storage.from(CONFIG.BUCKET).upload(path,blob,{contentType:'image/jpeg'}));return sb.storage.from(CONFIG.BUCKET).getPublicUrl(path).data.publicUrl}),
+    plLocal:false,
+    async listPlaylists(){
+      if(!this.plLocal){const {data,error}=await sb.from('playlists').select('*').order('id').limit(2000);if(!error)return data.map(p=>({...p,song_ids:(p.song_ids||[]).map(Number)}));this.plLocal=true}
+      return plLocalStore.get().filter(p=>user&&p.user_id===user.id);
+    },
+    async savePlaylist(p){
+      if(!user)throw new Error('로그인이 필요해요');
+      const row={name:p.name,description:p.description||'',color:p.color,is_public:!!p.is_public,song_ids:p.song_ids||[]};
+      if(this.plLocal){const l=plLocalStore.get();const now=new Date().toISOString();
+        if(p.id!=null){const o=l.find(x=>x.id===p.id);Object.assign(o,row,{updated_at:now});plLocalStore.set(l);return o}
+        const n={...row,id:'L'+Date.now(),user_id:user.id,is_public:false,created_at:now};l.push(n);plLocalStore.set(l);return n}
+      if(p.id!=null)return ok(await sb.from('playlists').update(row).eq('id',p.id).eq('user_id',user.id).select().single());
+      return ok(await sb.from('playlists').insert({...row,user_id:user.id}).select().single());
+    },
+    async deletePlaylist(id){if(this.plLocal){plLocalStore.set(plLocalStore.get().filter(x=>x.id!==id));return}ok(await sb.from('playlists').delete().eq('id',id).eq('user_id',user.id))},
+    async markGuide(){if(!user)return;const {error}=await sb.from('profiles').update({guide_done:true}).eq('id',user.id);if(!error)user={...user,guide_done:true}},
+    async resetGuide(){if(!user)return;const {error}=await sb.from('profiles').update({guide_done:false}).eq('id',user.id);if(!error)user={...user,guide_done:false}},
     listAll:wrap(async()=>{
       const all=async q=>{let out=[],i=0;for(;;){const {data,error}=await q().range(i,i+999);if(error)throw error;out=out.concat(data);if(data.length<1000)return out;i+=1000}};
       const [songs,reviews,likes,profiles]=await Promise.all([
@@ -1273,7 +1481,7 @@ function makeSupabaseBackend(){
    앱 상태 & 화면
    ========================================================= */
 let API;
-const state={songs:[],profiles:{},view:'all',q:'',tag:null,sort:'new',detailId:null,form:null,playingId:null,queue:[],layout:'list',editing:false,rsort:'new',srcf:'all',libFilter:'all',libQ:'',friend:null,shuffle:false,repeat:0,rightOpen:true,ctxName:'',local:[],hist:[],hpos:-1};
+const state={songs:[],profiles:{},view:'all',q:'',tag:null,sort:'new',detailId:null,form:null,playingId:null,queue:[],layout:'list',editing:false,rsort:'new',srcf:'all',libFilter:'all',libQ:'',friend:null,shuffle:false,repeat:0,rightOpen:true,ctxName:'',local:[],hist:[],hpos:-1,playlists:[],playlistId:null,plSort:'custom'};
 
 async function loadAll(){
   const {songs,reviews,likes,profiles}=await API.listAll();
@@ -1344,7 +1552,7 @@ async function addLocalFiles(files){
 function getRecent(){try{return JSON.parse(localStorage.getItem('lyra_recent'))||[]}catch(e){return[]}}
 function pushRecent(id){const r=getRecent().filter(x=>x!==id);r.unshift(id);localStorage.setItem('lyra_recent',JSON.stringify(r.slice(0,30)))}
 /* 뒤로·앞으로 */
-function snap(){return {view:state.view,tag:state.tag,friend:state.friend,q:state.q,srcf:state.srcf,profileId:state.profileId,sort:state.sort}}
+function snap(){return {view:state.view,tag:state.tag,friend:state.friend,q:state.q,srcf:state.srcf,profileId:state.profileId,sort:state.sort,playlistId:state.playlistId}}
 function pushHist(){
   const e=snap(),cur=state.hist[state.hpos];
   if(cur&&JSON.stringify(cur)===JSON.stringify(e))return;
@@ -1456,6 +1664,7 @@ function renderProfilePage(g){
       ${pinned?`<div class="sec-title">📌 대표곡</div><div class="pinned" data-open="${pinned.id}" style="--ch:${songHue(pinned)}"><div class="pc">${coverHTML(pinned)}</div><div><span class="hint">${esc(p.nickname)}님이 고른 대표곡</span><b>${esc(pinned.title)}</b><span class="hint">${esc(pinned.artist||'아티스트 미상')}${pinned.reviewCount?` • ★ ${pinned.avgStars.toFixed(1)}`:''}</span></div><button class="bigplay" data-play="${pinned.id}">${ic('play',20)}</button></div>`:''}
       <div class="sec-title">추천한 곡 <span class="cnt">${songs.length}곡</span></div>
       ${songs.length?`<div class="grid list">${songs.slice(0,state.profAll?999:5).map(rowHTML).join('')}</div>${songs.length>5?`<button class="linkbtn" data-act="profAll" style="margin:8px 16px">${state.profAll?'접기':'모두 표시'}</button>`:''}`:`<p class="hint">아직 추천한 노래가 없어요.</p>`}
+      ${(()=>{const pls=(state.playlists||[]).filter(x=>x.user_id===p.id&&(x.is_public||isMe));return pls.length?`<div class="sec-title">플레이리스트 <span class="cnt">${pls.length}개</span></div><div class="grid" style="margin:0 -12px 8px">${pls.map(plCardHTML).join('')}</div>`:isMe?`<div class="sec-title">플레이리스트</div><button class="outline" data-act="newPl" style="margin:0 0 8px">${ic('plus',14)} 플레이리스트 만들기</button>`:''})()}
       <div class="sec-title">최근 남긴 한줄평 <span class="cnt">${revs.length}개</span></div>
       ${revs.length?`<div class="revgrid">${revs.slice(0,8).map(r=>{const s=state.songs.find(x=>x.id===r.song_id);if(!s)return'';
         return `<div class="revcard" data-open="${s.id}" style="--ch:${songHue(s)}"><div class="rc2">${coverHTML(s)}</div><div style="min-width:0"><b>${esc(s.title)}</b><div>${starsHTML(Number(r.stars),12)} <span class="hint">${Number(r.stars).toFixed(1)}</span></div><p>“${esc(r.one_line)}”</p></div></div>`}).join('')}</div>`:`<p class="hint">아직 남긴 리뷰가 없어요.</p>`}
@@ -1538,6 +1747,10 @@ function renderSettings(g){
       u?srow('내 리뷰 내보내기','내가 남긴 별점·한줄평·리뷰를 파일로 저장',`<button class="outline sm" data-act="exportMine">내보내기</button>`):'',
       srow('설정 초기화','모든 설정을 처음 상태로',`<button class="outline sm" data-act="resetSettings">초기화</button>`),
     ]},
+    {id:'help',ic:'❓',t:'도움말',rows:[
+      srow('사용법 가이드 다시 보기','처음 접속했을 때 나온 13단계 안내를 다시 봐요',`<button class="outline sm" data-act="guide">가이드 시작</button>`),
+      srow('가이드 표시 상태',guideSeen()?'이미 본 가이드는 다음 접속 때 다시 뜨지 않아요':'다음 접속 때 가이드가 자동으로 떠요',`<button class="outline sm" data-act="guideReset">다음 접속 때 다시 띄우기</button>`),
+    ]},
     {id:'about',ic:'ℹ️',t:'정보',rows:[
       srow('RE87','Recommend + 87 · 친구들끼리 노래를 추천하고 평가하는 앱',`<span class="pill">v2.0</span>`),
       srow('평가 영역','멜로디·중독성 / 가사 / 보컬·음색 / 사운드·편곡 / 분위기·몰입감',''),
@@ -1582,6 +1795,8 @@ const IP={
   upload:'M11 16V6.8L7.4 10.4 6 9l6-6 6 6-1.4 1.4L13 6.8V16zM4 19h16v2H4z',trash:'M9 3h6l1 2h4v2H4V5h4zM6 9h12l-1 12H7z',
   folder:'M3 5h7l2 2h9v12H3z',clock:'M12 2a10 10 0 1 1 0 20 10 10 0 0 1 0-20zm0 2a8 8 0 1 0 0 16 8 8 0 0 0 0-16zm-1 3h2v5.6l3.7 2.2-1 1.7L11 13.7z',
   edit:'M4 17.2V20h2.8l8.3-8.3-2.8-2.8zM19.7 7a1 1 0 0 0 0-1.4l-1.3-1.3a1 1 0 0 0-1.4 0l-1.6 1.6 2.8 2.8z',search:'M10.5 3a7.5 7.5 0 0 1 5.9 12.1l5 5-1.4 1.4-5-5A7.5 7.5 0 1 1 10.5 3zm0 2a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11z',gear:'M19.4 13a7.5 7.5 0 0 0 0-2l2.1-1.6-2-3.5-2.5 1a7.3 7.3 0 0 0-1.7-1L15 3.3h-4l-.4 2.6a7.3 7.3 0 0 0-1.7 1l-2.5-1-2 3.5L6.6 11a7.5 7.5 0 0 0 0 2l-2.1 1.6 2 3.5 2.5-1a7.3 7.3 0 0 0 1.7 1l.4 2.6h4l.4-2.6a7.3 7.3 0 0 0 1.7-1l2.5 1 2-3.5zM13 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z',
+  plist:'M3 5h12v2H3zm0 5h12v2H3zm0 5h8v2H3zm14-5h2v4.2a3 3 0 1 1-2 2.8z',check:'M9.5 16.2 5.3 12l-1.4 1.4 5.6 5.6L20.1 8.4 18.7 7z',plus:'M11 4h2v7h7v2h-7v7h-2v-7H4v-2h7z',
+  dlplus:'M10 3h2v9.2l3-3 1.4 1.4-5.4 5.4L5.6 10.6 7 9.2l3 3zM3 19h11v2H3zm15-4h2v2.5h2.5v2H20V22h-2v-2.5h-2.5v-2H18z',up:'M12 5l7 7-1.4 1.4L13 8.8V20h-2V8.8l-4.6 4.6L5 12z',down:'M12 19l-7-7 1.4-1.4 4.6 4.6V4h2v11.2l4.6-4.6L19 12z',x:'M6.4 5 12 10.6 17.6 5 19 6.4 13.4 12l5.6 5.6-1.4 1.4-5.6-5.6L6.4 19 5 17.6 10.6 12 5 6.4z',
   back:'M15.4 4.6 8 12l7.4 7.4-1.4 1.4L5.2 12 14 3.2z',fwd:'M8.6 4.6 16 12l-7.4 7.4 1.4 1.4L18.8 12 10 3.2z',
 };
 const ic=(n,s)=>`<svg class="i" viewBox="0 0 24 24" ${s?`style="--s:${s}px"`:''}><path d="${IP[n]}"/></svg>`;
@@ -1597,6 +1812,241 @@ function renderHeader(){
     :`<button class="loginbtn" data-act="openAuth">로그인하기</button>`;
 }
 
+/* =========================================================
+   RE 점수 (RE87 고유): 평균 별점을 100점 만점으로
+   ========================================================= */
+const reScore=s=>s&&s.reviewCount?Math.round(s.avgStars/5*100):null;
+function reGauge(s,size=44){
+  const v=reScore(s);const r=size/2-3,c=2*Math.PI*r,p=v==null?0:v/100;
+  const hot=v!=null&&v>=87;
+  return `<span class="reg ${hot?'hot':''} ${v==null?'none':''}" style="--sz:${size}px" title="${v==null?'아직 평가 없음':'RE 점수 '+v+' / 100 (평균 별점 '+s.avgStars.toFixed(1)+')'}">
+    <svg viewBox="0 0 ${size} ${size}"><circle cx="${size/2}" cy="${size/2}" r="${r}" class="tr"/><circle cx="${size/2}" cy="${size/2}" r="${r}" class="fl" stroke-dasharray="${(c*p).toFixed(1)} ${c.toFixed(1)}" transform="rotate(-90 ${size/2} ${size/2})"/></svg>
+    <b>${v==null?'–':v}</b></span>`;
+}
+const reBar=s=>{const v=reScore(s);return `<span class="rebar ${v!=null&&v>=87?'hot':''}"><i style="width:${v||0}%"></i></span><span class="renum">${v==null?'–':v}</span>`};
+
+/* =========================================================
+   다운로드 리스트
+   ========================================================= */
+const DL={get(){try{return (JSON.parse(localStorage.getItem('re87_dl'))||[]).filter(id=>typeof id==='number')}catch(e){return[]}},set(l){localStorage.setItem('re87_dl',JSON.stringify(l))}};
+const canDL=s=>!!s&&s.source!=='youtube';
+const dlHas=id=>DL.get().includes(id);
+function dlAdd(ids,quiet){
+  const l=DL.get();let n=0,yt=0;
+  for(const id of ids){const s=findSong(id);if(!s)continue;if(!canDL(s)){yt++;continue}if(l.includes(id))continue;l.push(id);n++}
+  DL.set(l);renderFilters();
+  if(!quiet){if(n)toast(`⬇ 다운로드 리스트에 ${n}곡을 담았어요`);else if(yt&&!n)toast('YouTube 곡은 다운로드할 수 없어요',true);else toast('이미 다운로드 리스트에 있어요')}
+  return n;
+}
+function dlToggle(id,btn){
+  const s=findSong(id);if(!canDL(s))return toast('YouTube 곡은 다운로드할 수 없어요',true);
+  if(dlHas(id)){DL.set(DL.get().filter(x=>x!==id));toast('다운로드 리스트에서 뺐어요')}else{dlAdd([id],true);toast('⬇ 다운로드 리스트에 담았어요');if(btn)burst(btn,['⬇','✨'],8)}
+  renderFilters();renderGrid();if(state.detailId===id)renderDetail();
+}
+async function downloadOne(s){
+  if(s.local){const url=await LocalFiles.url(s.id);const a=document.createElement('a');a.href=url;a.download=s.file_name||s.title;document.body.appendChild(a);a.click();a.remove();return}
+  await API.download(s);
+}
+let dlRun=null;
+async function downloadAll(){
+  if(dlRun)return toast('이미 다운로드하고 있어요');
+  const items=DL.get().map(findSong).filter(canDL);
+  if(!items.length)return toast('다운로드 리스트가 비어 있어요');
+  dlRun={i:0,n:items.length,cur:'',fail:0};renderGrid();
+  for(const s of items){
+    dlRun.i++;dlRun.cur=s.title;updDlProg();
+    try{await downloadOne(s)}catch(e){dlRun.fail++}
+    await new Promise(r=>setTimeout(r,900));
+  }
+  const {n,fail}=dlRun;dlRun=null;renderGrid();
+  toast(fail?`${n-fail}곡 다운로드, ${fail}곡 실패`:`✅ ${n}곡을 모두 다운로드했어요`,!!fail);
+}
+function updDlProg(){const el=$('#dlProg');if(!el||!dlRun)return;el.querySelector('i').style.width=(dlRun.i/dlRun.n*100)+'%';el.querySelector('span').textContent=`${dlRun.i} / ${dlRun.n} · ${dlRun.cur}`}
+
+/* =========================================================
+   플레이리스트
+   ========================================================= */
+const plById=id=>(state.playlists||[]).find(p=>String(p.id)===String(id));
+const myPlaylists=()=>{const me=API.getUser();return me?(state.playlists||[]).filter(p=>p.user_id===me.id):[]};
+const plSongs=p=>(p&&p.song_ids||[]).map(findSong).filter(Boolean);
+function plCoverHTML(p,cls='pcov'){
+  const l=plSongs(p).slice(0,4);const c=safeColor(p.color);
+  if(l.length<4)return `<div class="${cls} one" style="background:linear-gradient(135deg,${c},color-mix(in srgb,${c} 35%,#000))">${l[0]&&cls!=='pcov'?coverHTML(l[0]):ic('plist',cls==='pcov'?84:22)}</div>`;
+  return `<div class="${cls}">${l.map(s=>`<div>${coverHTML(s)}</div>`).join('')}</div>`;
+}
+function plCardHTML(p,i){
+  const o=state.profiles[p.user_id]||{nickname:'?'};
+  return `<div class="card plcard" tabindex="0" role="button" data-pl="${esc(String(p.id))}" style="animation-delay:${Math.min(i,12)*30}ms;--ch:${hashHue(p.name)}">
+    <div class="cimg">${plCoverHTML(p,'pcov')}<button class="playbtn" data-plplay="${esc(String(p.id))}" title="재생">${ic('play',22)}</button></div>
+    <div class="t">${esc(p.name)}</div><div class="a">${esc(o.nickname)} • ${(p.song_ids||[]).length}곡${p.is_public?'':' • 🔒 나만 보기'}</div></div>`;
+}
+let plEdit=null;
+function openPlEditor(p,addSong){
+  if(needLogin())return;
+  plEdit={id:p?p.id:null,color:p?safeColor(p.color):COLORS[Math.floor(Math.random()*COLORS.length)],addSong:addSong||null};
+  $('#plTitle').textContent=p?'플레이리스트 편집':'새 플레이리스트';
+  $('#plName').value=p?p.name:'';$('#plDesc').value=p?p.description||'':'';$('#plPublic').checked=p?!!p.is_public:true;$('#plErr').textContent='';
+  $('#plDel').classList.toggle('hidden',!p);
+  colorPicker($('#plColors'),plEdit.color,c=>plEdit.color=c);
+  openModal('plModal');setTimeout(()=>$('#plName').focus(),50);
+}
+async function savePlEditor(){
+  const name=$('#plName').value.trim();if(!name)return $('#plErr').textContent='이름을 입력해 주세요';
+  const old=plEdit.id?plById(plEdit.id):null;
+  const ids=old?[...old.song_ids]:(plEdit.addSong?[plEdit.addSong]:[]);
+  const btn=$('#plSave');btn.disabled=true;
+  try{
+    const saved=await API.savePlaylist({id:plEdit.id,name:name.slice(0,40),description:$('#plDesc').value.trim().slice(0,200),color:plEdit.color,is_public:$('#plPublic').checked,song_ids:ids});
+    closeModal('plModal');toast(old?'플레이리스트를 저장했어요':`🎶 “${name}” 플레이리스트를 만들었어요`);
+    await loadPlaylists();renderFilters();
+    if(!old&&!plEdit.addSong)openPlaylist(saved.id);else renderGrid();
+  }catch(e){$('#plErr').textContent=e.message}finally{btn.disabled=false}
+}
+async function loadPlaylists(){try{state.playlists=await API.listPlaylists()}catch(e){state.playlists=state.playlists||[]}}
+function openPlaylist(id){closeModal('detailModal');state.playlistId=id;state.plSort='custom';setView('playlist')}
+async function plSetSongs(p,ids){
+  const before=p.song_ids;p.song_ids=ids;renderGrid();renderFilters();
+  try{await API.savePlaylist({...p,song_ids:ids})}catch(e){p.song_ids=before;renderGrid();toast(e.message,true)}
+}
+async function plToggleSong(pid,sid){
+  const p=plById(pid);if(!p)return;const has=p.song_ids.includes(sid);
+  await plSetSongs(p,has?p.song_ids.filter(x=>x!==sid):[...p.song_ids,sid]);
+  toast(has?`“${p.name}”에서 뺐어요`:`“${p.name}”에 추가했어요`);
+}
+function openPlMenu(btn,sid){
+  if(needLogin())return;
+  const m=$('#plmenu');const mine=myPlaylists();
+  m.innerHTML=`<div class="pmh">플레이리스트에 추가</div>${mine.map(p=>`<button data-pltog="${esc(String(p.id))}" data-sid="${sid}"><span class="pmc" style="background:${safeColor(p.color)}"></span><span class="pmn">${esc(p.name)}</span>${p.song_ids.includes(sid)?`<span class="pmk">${ic('check',16)}</span>`:''}</button>`).join('')||'<div class="pme">아직 만든 플레이리스트가 없어요</div>'}<hr><button data-act="newPl" data-sid="${sid}">${ic('plus',16)} 새 플레이리스트 만들기</button>`;
+  m.classList.remove('hidden');
+  const r=btn.getBoundingClientRect();const w=240;
+  m.style.left=Math.max(8,Math.min(innerWidth-w-8,r.right-w))+'px';
+  const h=m.offsetHeight;m.style.top=(r.bottom+6+h>innerHeight-8?Math.max(8,r.top-h-6):r.bottom+6)+'px';
+}
+
+/* =========================================================
+   사용법 가이드 (첫 방문)
+   ========================================================= */
+const GUIDE_KEY='re87_guide_v1';
+function guideSeen(){
+  if(localStorage.getItem(GUIDE_KEY))return true;
+  const u=API.getUser();return !!(u&&(u.guide_done||localStorage.getItem(GUIDE_KEY+'_'+u.id)));
+}
+function markGuide(){
+  localStorage.setItem(GUIDE_KEY,'1');const u=API.getUser();
+  if(u){localStorage.setItem(GUIDE_KEY+'_'+u.id,'1');if(!u.guide_done&&API.markGuide)API.markGuide().catch(()=>{})}
+}
+const GSTEPS=[
+  {t:'RE87에 오신 걸 환영해요! 👋',ic:'🟢',b:`<p><b>RE87</b>은 <b>Re</b>commend + <b>87</b>, 친구들끼리 노래를 추천하고 평가하는 앱이에요. (RE100의 패러디 — 100까진 안 가도 충분해요 😉)</p>
+    <ul><li>친구가 올린 노래를 <b>듣고</b>,</li><li><b>별점·한줄평·리뷰</b>로 평가하고,</li><li>내가 좋아하는 노래를 <b>추천</b>하고,</li><li><b>플레이리스트</b>와 <b>다운로드 리스트</b>로 모아 두는 곳이에요.</li></ul>
+    <p class="gk">화면의 각 부분을 하나씩 짚어 드릴게요. <kbd>→</kbd> 또는 <kbd>Enter</kbd>로 다음, <kbd>←</kbd>로 이전, <kbd>Esc</kbd>로 닫을 수 있어요.</p>`},
+  {sel:'#userArea',t:'1. 로그인하기',ic:'🔑',b:`<p>노래를 <b>추천·평가·좋아요</b>하려면 로그인이 필요해요. 듣기와 구경은 로그인 없이도 돼요.</p>
+    <ul><li><b>회원가입</b>: 아이디(영어 소문자·숫자·_ 3~20자) + 비밀번호(6자 이상) + <b>닉네임</b>(친구들에게 보이는 이름)</li><li>이메일은 필요 없어요.</li><li>한 번 로그인하면 <b>로그아웃하기 전까지 유지</b>돼요.</li><li>로그인 후 이 자리의 <b>프로필 사진</b>을 누르면 내 프로필·프로필 편집·설정·로그아웃 메뉴가 열려요.</li></ul>`},
+  {sel:'.topbtn',t:'2. 노래 추천하기',ic:'🎵',b:`<p>친구들에게 들려주고 싶은 노래를 올리는 버튼이에요. 세 가지 방법이 있어요.</p>
+    <ul><li><b>YouTube 링크</b>: 링크를 붙여넣으면 썸네일과 제목이 자동으로 채워져요.</li><li><b>MP3 파일</b> (최대 20MB) / <b>MP4 파일</b> (최대 50MB): 파일을 고르거나 창에 끌어다 놓으면 돼요. 파일 이름이 “가수 - 제목”이면 자동으로 나눠 넣어 줘요.</li><li><b>태그</b>(#보카로 #새벽감성 …)와 <b>추천 이유</b>를 적으면 친구들이 찾기 쉬워요.</li></ul>
+    <p class="gk">올린 MP3·MP4는 친구들이 앱에서 듣고 <b>다운로드</b>할 수 있어요.</p>`},
+  {sel:'.topcenter',t:'3. 홈 · 검색',ic:'🔍',b:`<ul><li><b>🏠 홈 버튼</b>: 언제든 첫 화면으로 돌아가요.</li><li><b>검색창</b>: 제목·가수·추천한 친구 닉네임·태그로 찾을 수 있어요.</li><li>검색창을 누르기만 하면 <b>“모두 둘러보기”</b>가 열려서 YouTube/MP3/MP4, 태그별로 골라 볼 수 있어요.</li><li>로고 옆 <b>‹ ›</b> 버튼은 이전·다음 화면으로 이동해요.</li></ul>`},
+  {sel:'.side',t:'4. 내 라이브러리',ic:'📚',b:`<p>왼쪽은 나만의 보관함이에요.</p>
+    <ul><li><b>♥ 좋아요 표시한 곡</b>: 하트를 누른 노래 모음</li><li><b>📁 내 기기 파일</b>: 업로드하지 않고 내 컴퓨터의 MP3·MP4를 이 브라우저에서만 재생</li><li><b>모든 추천곡 / 이번 주 인기 / 내가 추천한 곡 / 내가 평가한 곡</b></li><li>아래로 내리면 <b>내 플레이리스트</b>, <b>친구들의 플레이리스트</b>, <b>친구 목록</b>, <b>태그</b>가 있어요.</li><li>위쪽 칩(전체·플레이리스트·친구·태그)으로 거르고, 🔍로 라이브러리 안에서 검색할 수 있어요.</li></ul>`},
+  {sel:'#newPlBtn',t:'5. 플레이리스트 만들기',ic:'🎶',b:`<p>이 버튼으로 <b>나만의 플레이리스트</b>를 만들어요.</p>
+    <ul><li>이름·설명·색을 정하고, <b>공개</b>로 두면 친구들도 볼 수 있어요. (🔒 나만 보기도 가능)</li><li>곡 목록에서 <b>＋ 버튼</b>(또는 곡 화면의 “플레이리스트에 추가”)을 누르면 원하는 플레이리스트에 담겨요.</li><li>플레이리스트 화면에서 <b>↑ ↓</b>로 순서를 바꾸고, <b>✕</b>로 뺄 수 있어요.</li><li>▶ 를 누르면 플레이리스트 순서대로 재생돼요.</li></ul>`},
+  {sel:'#dlNav',t:'6. 다운로드 리스트',ic:'⬇️',b:`<p>여러 곡을 <b>한 번에 다운로드</b>하는 곳이에요.</p>
+    <ul><li>곡 목록의 <b>⬇＋ 버튼</b>이나 곡 화면의 “다운로드 리스트에 담기”로 곡을 담아요.</li><li>플레이리스트 화면에서는 <b>“모두 담기”</b>로 한꺼번에 담을 수 있어요.</li><li>다운로드 리스트에서 <b>“모두 다운로드”</b>를 누르면 차례대로 받아져요.</li><li>YouTube 곡은 다운로드할 수 없고, MP3·MP4만 돼요.</li></ul>
+    <p class="gk">처음 한 번은 브라우저가 “여러 파일 다운로드를 허용할까요?”라고 물어요. <b>허용</b>을 눌러 주세요.</p>`},
+  {sel:'#grid',t:'7. 노래 카드와 목록',ic:'💿',b:`<ul><li>카드나 줄을 <b>누르면 곡 화면</b>이 열려요.</li><li>카드에 마우스를 올리면 나오는 <b>▶ 버튼</b>으로 바로 재생해요.</li><li>카드 오른쪽 위의 동그란 숫자는 <b>RE 점수</b>예요. 친구들 평균 별점을 100점으로 바꾼 값이고, <b>87점 이상이면 “RE87 인증”</b>으로 빛나요 ✨</li><li>홈 위쪽 칩으로 <b>YouTube / MP3 / MP4</b>만 골라 볼 수 있어요.</li><li>목록 화면 오른쪽 위에서 <b>정렬</b>(최근·별점·좋아요·리뷰)과 <b>목록/카드 보기</b>를 바꿀 수 있어요.</li></ul>`},
+  {t:'8. 곡 화면에서 평가하기',ic:'⭐',b:`<p>곡을 열면 아래 순서로 평가할 수 있어요.</p>
+    <ul><li><b>별점</b>: 별 위에서 마우스를 움직이면 <b>반 개 단위</b>로 바뀌어요. 누르면 확정!</li><li><b>5가지 영역 점수 (1~10)</b>: 멜로디·중독성 / 가사 / 보컬·음색 / 사운드·편곡 / 분위기·몰입감 — 슬라이더를 움직이면 <b>오각형 차트</b>가 바로 바뀌어요.</li><li><b>한줄평</b>(60자, 필수)과 <b>리뷰</b>(선택)를 적고 “평가 등록”.</li><li>내 평가는 언제든 <b>수정·삭제</b>할 수 있어요.</li><li>오른쪽 “모두의 평가”에서 친구들 평균, 영역별 점수, 별점 분포를 볼 수 있어요.</li></ul>
+    <p class="gk">곡 화면에는 ♥ 좋아요, 🔗 공유 링크 복사, ⬇ 다운로드, ＋ 플레이리스트 추가 버튼도 있어요.</p>`},
+  {sel:'#player',t:'9. 재생바',ic:'▶️',b:`<ul><li>가운데: <b>🔀 셔플 · ⏮ 이전 · ▶ 재생/일시정지 · ⏭ 다음 · 🔁 반복</b>(누를 때마다 전체 반복 → 한 곡 반복 → 끔)</li><li>아래 막대를 끌면 원하는 위치로 이동해요.</li><li>왼쪽: 지금 곡 정보와 ♥. 제목을 누르면 곡 화면이 열려요.</li><li>오른쪽: 지금 재생 중 패널 열기·닫기, 영상 크게 보기, 볼륨.</li><li>한 곡이 끝나면 <b>보고 있던 목록의 다음 곡</b>이 자동 재생돼요.</li></ul>
+    <p class="gk">단축키: <kbd>Space</kbd> 재생/정지 · <kbd>←</kbd><kbd>→</kbd> 5초 이동 · <kbd>Shift</kbd>+<kbd>←</kbd><kbd>→</kbd> 이전/다음 곡 · <kbd>↑</kbd><kbd>↓</kbd> 볼륨 · <kbd>M</kbd> 음소거 · <kbd>L</kbd> 좋아요 · <kbd>/</kbd> 검색</p>`},
+  {sel:'#nowPanel',t:'10. 지금 재생 중',ic:'🎧',b:`<ul><li>재생 중인 곡의 큰 표지가 나와요. <b>YouTube·MP4는 여기서 영상</b>이 나와요.</li><li><b>추천한 친구</b>와 추천 이유, <b>친구들의 평가</b>, <b>다음 곡</b> 목록을 볼 수 있어요.</li><li>다음 곡을 누르면 그 곡으로 바로 넘어가요.</li><li>패널을 닫아도 영상은 오른쪽 아래 작은 창으로 계속 나와요.</li></ul>`},
+  {t:'11. 프로필 꾸미기',ic:'🪪',b:`<ul><li>프로필 사진 → <b>프로필 편집</b>에서 사진 올리기, 기본 이미지 15종, 소개, 프로필 색, 배너 8종, 좋아하는 장르(최대 5개), <b>대표곡</b>을 정할 수 있어요.</li><li>어디서든 친구의 <b>닉네임이나 사진을 누르면</b> 그 친구의 프로필로 가요. 추천한 곡, 한줄평, 공개 플레이리스트를 볼 수 있어요.</li><li>프로필·곡 화면의 <b>공유</b> 버튼을 누르면 링크가 복사돼서 친구에게 보낼 수 있어요.</li></ul>`},
+  {sel:'#helpBtn',t:'12. 가이드는 언제든 다시!',ic:'❓',b:`<ul><li>이 <b>? 버튼</b>을 누르면 이 가이드를 다시 볼 수 있어요.</li><li><b>설정 → 도움말</b>에서도 다시 볼 수 있어요.</li><li>설정에서는 UI 크기, 강조 색, 효과, 재생 속도, 홈 화면 구성, 단축키 등을 바꿀 수 있어요.</li></ul>
+    <p class="gk">이제 시작해 볼까요? 🎶 첫 곡을 추천하거나, 친구들의 노래를 들어 보세요!</p>`},
+];
+let gi=-1;
+function startGuide(){
+  closeModal('detailModal');$$('.modal:not(.hidden)').forEach(m=>closeModal(m.id));$('#umenu').classList.add('hidden');$('#plmenu').classList.add('hidden');
+  if(state.view!=='all')setView('all');
+  gi=0;document.body.classList.add('touring');$('#tour').classList.remove('hidden');showStep();
+}
+function endGuide(done){
+  gi=-1;document.body.classList.remove('touring');$('#tour').classList.add('hidden');markGuide();
+  if(done)toast('🎉 가이드를 마쳤어요! 다시 보려면 오른쪽 위 ? 버튼을 눌러 주세요');
+}
+function showStep(){
+  const st=GSTEPS[gi];if(!st)return endGuide(true);
+  let el=st.sel?$(st.sel):null;
+  if(el){const r=el.getBoundingClientRect();if(!r.width||!r.height||getComputedStyle(el).visibility==='hidden')el=null}
+  const hole=$('#tourHole'),card=$('#tourCard');
+  $('#tourIc').textContent=st.ic;$('#tourT').textContent=st.t;$('#tourB').innerHTML=st.b;
+  $('#tourN').textContent=`${gi+1} / ${GSTEPS.length}`;$('#tourBar').style.width=((gi+1)/GSTEPS.length*100)+'%';
+  $('#tourPrev').disabled=gi===0;$('#tourNext').textContent=gi===GSTEPS.length-1?'시작하기 🎶':'다음 →';
+  card.classList.toggle('center',!el);hole.classList.toggle('none',!el);
+  card.style.left=card.style.top='';
+  if(el){
+    if(el.scrollIntoView&&!['#player','.side','#nowPanel','#grid'].includes(st.sel))el.scrollIntoView({block:'nearest'});
+    const r=el.getBoundingClientRect(),pad=6;
+    Object.assign(hole.style,{left:(r.left-pad)+'px',top:(r.top-pad)+'px',width:(r.width+pad*2)+'px',height:(r.height+pad*2)+'px'});
+    const cw=Math.min(400,innerWidth-24),ch=card.offsetHeight;
+    let x,y;
+    if(r.right+16+cw<innerWidth){x=r.right+16;y=r.top}
+    else if(r.left-16-cw>0){x=r.left-16-cw;y=r.top}
+    else if(r.bottom+16+ch<innerHeight){x=r.left;y=r.bottom+16}
+    else{x=r.left;y=r.top-16-ch}
+    x=Math.max(12,Math.min(innerWidth-cw-12,x));y=Math.max(12,Math.min(innerHeight-ch-12,y));
+    card.style.left=x+'px';card.style.top=y+'px';
+  }
+  card.classList.remove('pop');void card.offsetWidth;card.classList.add('pop');
+}
+function guideNav(d){gi+=d;if(gi<0)gi=0;if(gi>=GSTEPS.length)return endGuide(true);showStep()}
+
+/* ---------- 다운로드 리스트 / 플레이리스트 화면 ---------- */
+function pageHero(cov,kind,title,desc,meta,h){
+  setGlow(h);
+  return `<div class="phero re-hero" style="background:linear-gradient(180deg,hsla(${h},55%,40%,.75),hsla(${h},45%,20%,.88))">${cov}
+    <div class="ph-txt"><div class="ph-kind">${kind}</div><div class="ph-title${[...title].length>7?' long':''}">${esc(title)}</div>
+    <div class="ph-desc">${esc(desc||'')}</div><div class="ph-meta">${meta}</div></div></div>`;
+}
+function renderDownloadsPage(g,empty){
+  const list=visibleSongs();const total=list.reduce((a,s)=>a+(s.file_size||0),0);const i=VIEW_INFO.downloads;
+  let html=pageHero(`<div class="pcov one" style="background:${i.grad}">${ic('dl',100)}</div>`,i.kind,i.title,i.desc,`<b>내 기기</b><span class="d">• ${list.length}곡${total?`, 총 ${fmtSize(total)}`:''}</span>`,150);
+  html+=`<div class="pfade" style="background:linear-gradient(180deg,hsla(150,45%,14%,.9),var(--base) 260px)"><div class="actionbar">
+    ${list.length?`<button class="bigplay dlall" data-act="dlAll" title="모두 다운로드" ${dlRun?'disabled':''}>${ic('dl',26)}</button><b class="dlall-l">${dlRun?'다운로드 중…':'모두 다운로드'}</b>
+    <button class="ib" data-act="playAll" title="재생" style="width:40px;height:40px">${ic('play',26)}</button>
+    <button class="outline sm" data-act="dlClear">목록 비우기</button>`:''}
+    <div class="right"><button class="layoutbtn" data-layout="${state.layout==='list'?'grid':'list'}">${state.layout==='list'?'목록':'카드'} ${ic(state.layout==='list'?'list':'grid',16)}</button></div></div>
+    ${dlRun?`<div class="dlprog" id="dlProg"><i style="width:${dlRun.i/dlRun.n*100}%"></i><span>${dlRun.i} / ${dlRun.n} · ${esc(dlRun.cur)}</span></div>`:''}
+    ${list.length?`<div class="dlhint">${ic('check',14)} 브라우저가 “여러 파일 다운로드”를 물으면 <b>허용</b>을 눌러 주세요. 파일은 한 곡씩 차례대로 받아져요.</div>`:''}`;
+  if(list.length) html+=state.layout==='grid'?`<div class="grid" style="margin:0 -12px">${list.map(cardHTML).join('')}</div>`:`<div class="grid list">${listHTML(list)}</div>`;
+  g.innerHTML=html+'</div>';
+  if(!list.length){empty.classList.remove('hidden');empty.innerHTML=`<div class="ei">⬇</div><b>다운로드 리스트가 비어 있어요</b><span class="esub">곡 목록의 ${ic('dlplus',16)} 버튼이나 곡 화면의 “다운로드 리스트에 담기”로 MP3·MP4를 담아 보세요.<br>플레이리스트에서는 “모두 담기”로 한 번에 담을 수 있어요.</span>`}
+}
+function renderPlaylistPage(g,empty){
+  const p=plById(state.playlistId);
+  if(!p){g.innerHTML='';empty.classList.remove('hidden');empty.innerHTML=`<div class="ei">🎶</div><b>플레이리스트를 찾을 수 없어요</b><span class="esub">삭제됐거나 비공개로 바뀌었을 수 있어요.</span>`;return}
+  const me=API.getUser();const mine=me&&p.user_id===me.id;const o=state.profiles[p.user_id]||(mine?me:{nickname:'?'});
+  const list=visibleSongs();const all=plSongs(p);const dlable=all.filter(canDL).length;const h=hashHue(p.name);
+  const secs=all.length;
+  let html=pageHero(plCoverHTML(p,'pcov'),(p.is_public?'공개':'🔒 비공개')+' 플레이리스트',p.name,p.description,`${avatarHTML(o)} <b data-profile="${esc(p.user_id)}" class="plowner">${esc(o.nickname)}</b><span class="d">• ${secs}곡${API.plLocal&&mine?' • 이 기기에만 저장됨':''}</span>`,h);
+  html+=`<div class="pfade" style="background:linear-gradient(180deg,hsla(${h},45%,16%,.9),var(--base) 260px)"><div class="actionbar">
+    ${all.length?`<button class="bigplay" data-act="playAll" title="재생">${ic('play',24)}</button><button class="ib ${state.shuffle?'on':''}" data-act="shuffleAll" title="셔플 재생" style="width:40px;height:40px">${ic('shuffle',28)}</button>`:''}
+    ${dlable?`<button class="outline sm" data-act="dlAddAll" title="MP3·MP4 곡을 다운로드 리스트에 모두 담기">${ic('dlplus',16)} 모두 담기 (${dlable})</button>`:''}
+    <button class="ib" data-share="playlist:${esc(String(p.id))}" title="링크 공유" style="width:36px;height:36px">${ic('share',22)}</button>
+    ${mine?`<button class="ib" data-act="plEdit" title="편집" style="width:36px;height:36px">${ic('edit',22)}</button><button class="ib" data-act="plDel" title="삭제" style="width:36px;height:36px">${ic('trash',22)}</button>`:''}
+    <div class="right"><select id="plSortSel"><option value="custom">사용자 지정 순서</option><option value="new">최근 추천순</option><option value="stars">별점순</option><option value="title">제목순</option></select>
+    <button class="layoutbtn" data-layout="${state.layout==='list'?'grid':'list'}">${state.layout==='list'?'목록':'카드'} ${ic(state.layout==='list'?'list':'grid',16)}</button></div></div>`;
+  if(list.length) html+=state.layout==='grid'?`<div class="grid" style="margin:0 -12px">${list.map(cardHTML).join('')}</div>`:`<div class="grid list">${listHTML(list)}</div>`;
+  if(mine) html+=plSuggestHTML(p);
+  g.innerHTML=html+'</div>';
+  const sel=$('#plSortSel');sel.value=state.plSort;sel.onchange=()=>{state.plSort=sel.value;renderGrid()};
+  if(!all.length){empty.classList.remove('hidden');empty.innerHTML=`<div class="ei">🎶</div><b>아직 곡이 없어요</b><span class="esub">${mine?'곡 목록의 ＋ 버튼이나 곡 화면의 “플레이리스트에 추가”로 담아 보세요. 아래 추천 곡에서 바로 넣을 수도 있어요.':'곧 곡이 채워질 거예요.'}</span>`}
+}
+function plSuggestHTML(p){
+  const l=state.songs.filter(s=>!p.song_ids.includes(s.id)).sort((a,b)=>b.avgStars-a.avgStars||new Date(b.created_at)-new Date(a.created_at)).slice(0,6);
+  if(!l.length)return '';
+  return `<section class="plsug"><h3>이 플레이리스트에 넣을 만한 곡</h3>${l.map(s=>`<div class="plsug-r"><div class="rc">${coverHTML(s)}</div><div class="rt"><b>${esc(s.title)}</b><span>${esc(s.artist||'아티스트 미상')} · ${esc(s.owner.nickname)}</span></div>${reGauge(s,30)}<button class="outline sm" data-pltog="${esc(String(p.id))}" data-sid="${s.id}">추가</button></div>`).join('')}</section>`;
+}
+
 const VIEW_INFO={
   liked:{kind:'플레이리스트',title:'좋아요 표시한 곡',desc:'내가 ♥를 누른 노래',icon:'♥',hue:250,grad:'linear-gradient(135deg,#4a1fd6,#8f7cf0 55%,#c4e8dc)'},
   local:{kind:'내 기기',title:'내 기기 파일',desc:'업로드하지 않고 이 브라우저에서만 재생하는 MP3·MP4',icon:'📁',hue:145,grad:'linear-gradient(135deg,#0d7a35,#1ed760)'},
@@ -1605,7 +2055,9 @@ const VIEW_INFO={
   browse:{kind:'공개 플레이리스트',title:'모든 추천곡',desc:'친구들이 추천한 모든 노래',icon:'🎧',hue:150},
   hot:{kind:'차트',title:'이번 주 인기',desc:'최근 7일 동안 좋아요를 많이 받은 곡',icon:'🔥',hue:12},
   mine:{kind:'내 라이브러리',title:'내가 추천한 곡',desc:'내가 올린 노래 모음',icon:'💿',hue:262},
+  playlists:{kind:'라이브러리',title:'플레이리스트',desc:'',icon:'🎶',hue:150},
   myreviews:{kind:'내 라이브러리',title:'내가 평가한 곡',desc:'별점과 한줄평을 남긴 노래',icon:'⭐',hue:45},
+  downloads:{kind:'다운로드 리스트',title:'다운로드 리스트',desc:'담아 둔 MP3·MP4를 한 번에 내려받아요',icon:'⬇',hue:150,grad:'linear-gradient(135deg,#063d22,#1ed760 70%,#d7ff5a)'},
 };
 function tagCount(){const m={};state.songs.forEach(s=>(s.tags||[]).forEach(t=>m[t]=(m[t]||0)+1));return Object.entries(m).sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0]))}
 
@@ -1614,22 +2066,32 @@ function renderFilters(){
   const me=API.getUser();
   const cnt={browse:state.songs.length,hot:state.songs.filter(s=>s.weekLikes>0).length,
     mine:me?state.songs.filter(s=>s.user_id===me.id).length:0,myreviews:me?state.songs.filter(s=>s.myReview).length:0,
-    liked:state.songs.filter(s=>s.liked).length,local:(state.local||[]).length};
+    liked:state.songs.filter(s=>s.liked).length,local:(state.local||[]).length,downloads:DL.get().filter(id=>findSong(id)).length};
   const lf=state.libFilter,lq=state.libQ.trim().toLowerCase();
   $('#libChips').innerHTML=[['all','전체'],['list','플레이리스트'],['friend','친구'],['tag','태그']].map(([k,l])=>`<button class="chip ${lf===k?'on':''}" data-libf="${k}">${l}</button>`).join('');
-  const sysItems=lf==='tag'||lf==='friend'?[]:['liked','local','browse','hot','mine','myreviews'].filter(v=>!lq||VIEW_INFO[v].title.toLowerCase().includes(lq)).map(v=>{const i=VIEW_INFO[v];const on=state.view===v&&!state.tag&&!state.q.trim();
-    return `<button class="libitem ${on?'on':''}" data-view="${v}"><span class="lc" style="background:${i.grad||`linear-gradient(135deg,hsl(${i.hue},70%,45%),hsl(${i.hue+40},60%,22%))`}">${v==='liked'?heartIc(true,20):v==='local'?ic('folder',22):i.icon}</span><span class="ln"><b>${i.title}</b><span class="s"><span class="pin">${ic('pin',12)}</span>${i.kind==='차트'?'차트':v==='local'?'내 기기':'플레이리스트'} • ${cnt[v]}곡</span></span></button>`});
+  const sysItems=lf==='tag'||lf==='friend'?[]:['liked','downloads','local','browse','hot','mine','myreviews'].filter(v=>!lq||VIEW_INFO[v].title.toLowerCase().includes(lq)).map(v=>{const i=VIEW_INFO[v];const on=state.view===v&&!state.tag&&!state.q.trim();
+    return `<button class="libitem ${on?'on':''}" data-view="${v}"${v==='downloads'?' id="dlNav"':''}><span class="lc" style="background:${i.grad||`linear-gradient(135deg,hsl(${i.hue},70%,45%),hsl(${i.hue+40},60%,22%))`}">${v==='liked'?heartIc(true,20):v==='local'?ic('folder',22):v==='downloads'?ic('dl',22):i.icon}</span><span class="ln"><b>${i.title}</b><span class="s"><span class="pin">${ic('pin',12)}</span>${i.kind==='차트'?'차트':v==='local'?'내 기기':v==='downloads'?'담은 곡':'플레이리스트'} • ${cnt[v]}곡${v==='downloads'&&dlRun?' · 받는 중':''}</span></span></button>`});
+  const me3=API.getUser();const pls=lf==='tag'||lf==='friend'?[]:(state.playlists||[]).filter(p=>!lq||p.name.toLowerCase().includes(lq)).sort((a,b)=>state.libSort==='name'?a.name.localeCompare(b.name):new Date(b.updated_at||b.created_at||0)-new Date(a.updated_at||a.created_at||0));
+  const plItem=p=>`<button class="libitem ${state.view==='playlist'&&String(state.playlistId)===String(p.id)?'on':''}" data-pl="${esc(String(p.id))}">${plCoverHTML(p,'lc pl')}<span class="ln"><b>${esc(p.name)}</b><span class="s">${p.is_public?'':'🔒 '}플레이리스트 • ${esc((state.profiles[p.user_id]||{}).nickname||'나')} • ${(p.song_ids||[]).length}곡</span></span></button>`;
+  const myPl=pls.filter(p=>me3&&p.user_id===me3.id).map(plItem),frPl=pls.filter(p=>!me3||p.user_id!==me3.id).map(plItem);
   const friendItems=lf==='list'||lf==='tag'?[]:Object.values(state.profiles).sort((a,b)=>state.libSort==='name'?a.nickname.localeCompare(b.nickname):new Date(b.created_at||0)-new Date(a.created_at||0)).filter(p=>!lq||p.nickname.toLowerCase().includes(lq)).map(p=>{const n=state.songs.filter(x=>x.user_id===p.id).length;const me2=API.getUser();
     return `<button class="libitem ${state.view==='profile'&&state.profileId===p.id?'on':''}" data-profile="${esc(p.id)}"><span class="lc round avwrap">${avatarHTML({...p,id:null})}</span><span class="ln"><b>${esc(p.nickname)}${me2&&me2.id===p.id?' (나)':''}</b><span class="s">프로필 • 추천 ${n}곡</span></span></button>`});
   const tagItems=lf==='list'||lf==='friend'?[]:tagCount().sort((a,b)=>state.libSort==='name'?a[0].localeCompare(b[0]):0).filter(([t])=>!lq||t.toLowerCase().includes(lq)).map(([t,n])=>{const h=hashHue(t);
     return `<button class="libitem ${state.tag===t?'on':''}" data-tag="${esc(t)}"><span class="lc round" style="background:linear-gradient(135deg,hsl(${h},70%,55%),hsl(${(h+60)%360},65%,30%))">#</span><span class="ln"><b>${esc(t)}</b><span class="s">태그 • ${n}곡</span></span></button>`});
-  $('#sideLib').innerHTML=sysItems.join('')+(friendItems.length&&lf==='all'?'<div class="libtitle">친구</div>':'')+friendItems.join('')+(tagItems.length&&lf==='all'?'<div class="libtitle">태그</div>':'')+tagItems.join('')||'<div class="hint" style="padding:16px">찾는 항목이 없어요</div>';
+  $('#sideLib').innerHTML=sysItems.join('')+(lf==='all'||lf==='list'?(myPl.length?'<div class="libtitle">내 플레이리스트</div>'+myPl.join(''):me3&&!lq?'<button class="libitem plnew" data-act="newPl"><span class="lc">'+ic('plus',22)+'</span><span class="ln"><b>첫 플레이리스트 만들기</b><span class="s">좋아하는 곡을 모아 보세요</span></span></button>':'')+(frPl.length?'<div class="libtitle">친구들의 플레이리스트</div>'+frPl.join(''):''):'')+(friendItems.length&&lf==='all'?'<div class="libtitle">친구</div>':'')+friendItems.join('')+(tagItems.length&&lf==='all'?'<div class="libtitle">태그</div>':'')+tagItems.join('')||'<div class="hint" style="padding:16px">찾는 항목이 없어요</div>';
   $('#homeBtn').classList.toggle('on',state.view==='all'&&!state.q.trim());
-  $('#mlib').innerHTML=[['all','홈'],['search','검색'],['browse','모든 곡'],['hot','인기'],['mine','내 추천'],['myreviews','내 리뷰'],['settings','설정']].map(([v,l])=>`<button class="${state.view===v&&!state.tag?'on':''}" data-view="${v}">${l}</button>`).join('');
+  $('#mlib').innerHTML=[['all','홈'],['search','검색'],['playlists','플레이리스트'],['downloads','다운로드'],['browse','모든 곡'],['hot','인기'],['mine','내 추천'],['myreviews','내 리뷰'],['settings','설정']].map(([v,l])=>`<button class="${state.view===v&&!state.tag?'on':''}" data-view="${v}">${l}</button>`).join('');
 }
 
 function visibleSongs(){
-  const me=API.getUser();let list=state.view==='local'?[...(state.local||[])]:[...state.songs];
+  const me=API.getUser();
+  if(state.view==='downloads'||state.view==='playlist'){
+    const base=state.view==='downloads'?DL.get().map(findSong).filter(Boolean):plSongs(plById(state.playlistId));
+    const q=state.q.trim().toLowerCase();const l=base.filter(s=>!q||[s.title,s.artist].join(' ').toLowerCase().includes(q));
+    if(state.view==='playlist'&&state.plSort!=='custom'){const by={new:(a,b)=>new Date(b.created_at)-new Date(a.created_at),stars:(a,b)=>b.avgStars-a.avgStars,title:(a,b)=>a.title.localeCompare(b.title)};return [...l].sort(by[state.plSort]||by.new)}
+    return l;
+  }
+  let list=state.view==='local'?[...(state.local||[])]:[...state.songs];
   if(state.view==='recent'){const q=state.q.trim().toLowerCase();return getRecent().map(findSong).filter(Boolean).filter(s=>!q||[s.title,s.artist].join(' ').toLowerCase().includes(q))}
   if(state.view==='liked') list=list.filter(s=>s.liked);
   if(state.view==='todo') list=me?list.filter(s=>!s.myReview&&s.user_id!==me.id):[];
@@ -1651,7 +2113,7 @@ function cardHTML(s,i){
   const sub=state.view==='myreviews'&&s.myReview?`내 한줄평 · ${esc(s.myReview.one_line)}`:
     s.local?`${esc(s.artist||'아티스트 미상')} • 내 기기 파일`:`${esc(s.artist||'아티스트 미상')} • ${s.reviewCount?`<span class="st">★ ${s.avgStars.toFixed(1)}</span>`:''}<span class="csub">${avatarHTML(s.owner)}${nameHTML(s.owner)}</span>`;
   return `<div class="card ${on?'playing':''}" tabindex="0" role="button" data-open="${s.id}" style="animation-delay:${Math.min(i,12)*30}ms;--ch:${songHue(s)}">
-    <div class="cimg">${coverHTML(s)}${s.source!=='youtube'?`<span class="badge">${s.source.toUpperCase()}</span>`:''}<button class="playbtn" data-play="${s.id}" title="재생">${ic(on&&!isPaused()?'pause':'play',22)}</button></div>
+    <div class="cimg">${coverHTML(s)}${s.source!=='youtube'?`<span class="badge">${s.source.toUpperCase()}</span>`:''}${s.local?'':`<span class="cre">${reGauge(s,38)}</span>`}<button class="playbtn" data-play="${s.id}" title="재생">${ic(on&&!isPaused()?'pause':'play',22)}</button></div>
     <div class="t">${esc(s.title)}</div>
     <div class="a">${sub}</div>
   </div>`;
@@ -1666,12 +2128,19 @@ function rowHTML(s,i){
     <div class="rl">${s.local?esc(s.file_name):line?esc(line):''}</div>
     <div class="rb2">${avatarHTML(s.owner)} ${nameHTML(s.owner)}</div>
     <div class="rd">${fmtDateK(s.created_at)}</div>
-    <div class="rend">${s.local?`<button class="lk" data-lshare="${s.id}" title="친구들에게 추천하기">${ic('upload',16)}</button><button class="lk" data-ldel="${s.id}" title="목록에서 지우기">${ic('trash',16)}</button><span>${fmtSize(s.file_size)}</span>`:`<button class="lk ${s.liked?'on':''}" data-like="${s.id}" title="좋아요">${heartIc(s.liked,16)}</button><span>${s.reviewCount?'★ '+s.avgStars.toFixed(1):'–'}</span>`}</div>
+    <div class="rend">${s.local?`<button class="lk" data-lshare="${s.id}" title="친구들에게 추천하기">${ic('upload',16)}</button><button class="lk" data-ldel="${s.id}" title="목록에서 지우기">${ic('trash',16)}</button><span>${fmtSize(s.file_size)}</span>`:`${rowTools(s,i)}<button class="lk ${s.liked?'on':''}" data-like="${s.id}" title="좋아요">${heartIc(s.liked,16)}</button>${reGauge(s,28)}`}</div>
   </div>`;
+}
+function rowTools(s,i){
+  const pl=state.view==='playlist'&&plById(state.playlistId);const me=API.getUser();
+  const own=pl&&me&&pl.user_id===me.id&&state.plSort==='custom'&&!state.q.trim();
+  return (own?`<button class="lk" data-plmv="-1" data-sid="${s.id}" title="위로" ${i===0?'disabled':''}>${ic('up',15)}</button><button class="lk" data-plmv="1" data-sid="${s.id}" title="아래로">${ic('down',15)}</button><button class="lk" data-plrm="${s.id}" title="플레이리스트에서 빼기">${ic('x',15)}</button>`:'')
+    +(state.view==='downloads'?`<button class="lk on" data-dlt="${s.id}" title="다운로드 리스트에서 빼기">${ic('x',15)}</button><button class="lk" data-dl="${s.id}" title="이 곡만 다운로드">${ic('dl',16)}</button>`:canDL(s)?`<button class="lk ${dlHas(s.id)?'on':''}" data-dlt="${s.id}" title="${dlHas(s.id)?'다운로드 리스트에서 빼기':'다운로드 리스트에 담기'}">${ic(dlHas(s.id)?'check':'dlplus',16)}</button>`:'')
+    +(own?'':`<button class="lk" data-addpl="${s.id}" title="플레이리스트에 추가">${ic('plus',16)}</button>`);
 }
 function listHTML(list){
   const L=state.view==='local';
-  return `<div class="listhead"><span class="r">#</span><span>제목</span><span>${L?'파일 이름':'한줄평'}</span><span class="h3">${L?'위치':'추천인'}</span><span class="h4">추가한 날짜</span><span class="r">${L?'크기':'★'}</span></div>`+list.map(rowHTML).join('');
+  return `<div class="listhead"><span class="r">#</span><span>제목</span><span>${L?'파일 이름':'한줄평'}</span><span class="h3">${L?'위치':'추천인'}</span><span class="h4">추가한 날짜</span><span class="r">${L?'크기':'RE'}</span></div>`+list.map(rowHTML).join('');
 }
 function shelfHTML(key,lbl,title,list){
   if(!list.length) return '';
@@ -1692,6 +2161,14 @@ function renderGrid(){
   empty.classList.add('hidden');
   if(state.view==='settings'){g.className='';return renderSettings(g)}
   if(state.view==='profile'){g.className='';return renderProfilePage(g)}
+  if(state.view==='downloads'){g.className='';return renderDownloadsPage(g,empty)}
+  if(state.view==='playlist'){g.className='';return renderPlaylistPage(g,empty)}
+  if(state.view==='playlists'){g.className='';setGlow(150);const me=API.getUser();const all=state.playlists||[];const mine=all.filter(p=>me&&p.user_id===me.id),fr=all.filter(p=>!me||p.user_id!==me.id);
+    g.innerHTML=`<div class="browse-h" style="display:flex;align-items:center;gap:12px">플레이리스트<span style="flex:1"></span><button class="outline sm" data-act="newPl">${ic('plus',14)} 새 플레이리스트</button></div>
+      ${mine.length?`<section class="shelf"><div class="shelf-h"><div><h2>내 플레이리스트</h2></div></div><div class="grid">${mine.map(plCardHTML).join('')}</div></section>`:''}
+      ${fr.length?`<section class="shelf"><div class="shelf-h"><div><h2>친구들의 플레이리스트</h2></div></div><div class="grid">${fr.map(plCardHTML).join('')}</div></section>`:''}`;
+    if(!all.length){empty.classList.remove('hidden');empty.innerHTML=`<div class="ei">🎶</div><b>아직 플레이리스트가 없어요</b><span class="esub">좋아하는 곡을 모아 나만의 플레이리스트를 만들어 보세요.</span><br><button class="primary" data-act="newPl">플레이리스트 만들기</button>`}
+    return}
   /* 홈 */
   if(state.view==='all'&&!state.q.trim()&&!state.tag){
     {const ps=findSong(state.playingId);setGlow(ps?songHue(ps):145)}
@@ -1778,9 +2255,10 @@ function renderSkeleton(){$('#grid').innerHTML=`<div class="grid" style="margin-
 let lastSig='';
 async function refresh(force=true){
   try{await loadAll()}catch(e){toast('불러오기 실패: '+e.message,true)}
+  await loadPlaylists();
   loadLocal();
   const u=API.getUser();
-  const sig=JSON.stringify([u&&u.id,u&&u.nickname,u&&u.avatar_url,state.songs.map(s=>[s.id,s.likeCount,s.reviewCount,s.avgStars,s.liked,s.latestOneLine,s.title]),Object.values(state.profiles).map(p=>[p.id,p.nickname,p.avatar_url,p.color,p.bio]),state.local.length]);
+  const sig=JSON.stringify([u&&u.id,u&&u.nickname,u&&u.avatar_url,state.songs.map(s=>[s.id,s.likeCount,s.reviewCount,s.avgStars,s.liked,s.latestOneLine,s.title]),Object.values(state.profiles).map(p=>[p.id,p.nickname,p.avatar_url,p.color,p.bio]),state.local.length,state.playlists.map(p=>[p.id,p.name,p.color,p.is_public,p.description,(p.song_ids||[]).join(',')])]);
   if(!force&&sig===lastSig)return;
   if(!force&&(state.view==='settings'||document.activeElement&&document.activeElement.matches('input,textarea,select')))return;
   lastSig=sig;
@@ -1913,6 +2391,7 @@ async function renderDetail(){
   const scrollY=$('#detailModal').scrollTop;
   $('#detail').innerHTML=`
   <div class="dhero">
+    ${s.local?'':`<div class="dre">${reGauge(s,64)}<span>RE SCORE</span></div>`}
     <div class="dhero-bg" style="background:${s.source==='youtube'?`url('${ytThumb(esc(s.youtube_id))}') center/cover,`:''}${genGrad(s)}"></div>
     <div class="dhead">
       <div class="dcovw ${playing?'playing':''}"><div class="dvinyl"><div class="lbl">${coverHTML(s)}</div></div><div class="dcov">${coverHTML(s)}</div></div>
@@ -1928,6 +2407,8 @@ async function renderDetail(){
     <button class="ib ${s.liked?'on':''}" data-like="${s.id}" title="좋아요">${heartIc(s.liked,32)}</button><span class="hint" style="margin-left:-14px">${s.likeCount}명</span>
     <button class="ib" data-share="song:${s.id}" title="링크 공유">${ic('share',26)}</button>
     ${s.source!=='youtube'?`<button class="ib" data-dl="${s.id}" title="다운로드">${ic('dl',30)}</button>`:`<a href="https://www.youtube.com/watch?v=${esc(s.youtube_id)}" target="_blank" rel="noopener"><button class="outline">${ic('ext',16)} YouTube에서 열기</button></a>`}
+    <button class="outline" data-addpl="${s.id}">${ic('plus',16)} 플레이리스트에 추가</button>
+    ${canDL(s)?`<button class="outline ${dlHas(s.id)?'on':''}" data-dlt="${s.id}">${ic(dlHas(s.id)?'check':'dlplus',16)} ${dlHas(s.id)?'다운로드 리스트에 담김':'다운로드 리스트에 담기'}</button>`:''}
     ${isOwner?`<button class="outline" data-delsong="${s.id}" style="color:var(--danger);border-color:#5a2a30">삭제</button>`:''}
     ${(s.tags||[]).length?`<div class="tagrow" style="margin:0">${s.tags.map(t=>`<button class="tag" data-tag="${esc(t)}">#${esc(t)}</button>`).join('')}</div>`:''}
   </div>
@@ -2097,6 +2578,7 @@ function ctxName(){
   if(state.friend) return (state.profiles[state.friend]?.nickname||'친구')+'님의 추천';
   if(state.view==='profile') return (state.profiles[state.profileId]?.nickname||'')+'님의 프로필';
   if(state.view==='settings') return '설정';
+  if(state.view==='playlist') return plById(state.playlistId)?.name||'플레이리스트';
   return VIEW_INFO[state.view]?.title||'홈';
 }
 function onEnded(){if(state.repeat===2&&ctl){ctl.seek(0);ctl.play();return}if(!S.autonext)return;playNext(1,true)}
@@ -2198,18 +2680,22 @@ async function copyText(t){
 }
 async function shareItem(kind,id){
   const url=shareBase()+'#'+kind+'='+encodeURIComponent(id);
-  const s=kind==='song'?findSong(+id):null,p=kind==='profile'?state.profiles[id]:null;
-  const title=s?`${s.title}${s.artist?' - '+s.artist:''}`:p?`${p.nickname}님의 프로필`:'RE87';
+  const s=kind==='song'?findSong(+id):null,p=kind==='profile'?state.profiles[id]:null,pl=kind==='playlist'?plById(id):null;
+  if(pl&&!pl.is_public)return toast('비공개 플레이리스트는 공유할 수 없어요. 편집에서 공개로 바꿔 주세요',true);
+  if(pl&&String(pl.id).startsWith('L'))return toast('이 기기에만 저장된 플레이리스트라 공유할 수 없어요',true);
+  const title=s?`${s.title}${s.artist?' - '+s.artist:''}`:p?`${p.nickname}님의 프로필`:pl?`${pl.name} 플레이리스트`:'RE87';
   if(navigator.share&&matchMedia('(pointer:coarse)').matches){try{await navigator.share({title:'RE87',text:title,url});return}catch(e){}}
   if(await copyText(url))toast('🔗 링크를 복사했어요! 친구에게 붙여넣어 보내 주세요');else toast('복사하지 못했어요: '+url,true);
 }
 function openFromHash(){
-  const m=location.hash.match(/^#(song|profile)=(.+)$/);if(!m)return;
+  const m=location.hash.match(/^#(song|profile|playlist)=(.+)$/);if(!m)return;
   let v;try{v=decodeURIComponent(m[2])}catch(e){return toast('잘못된 공유 링크예요',true)}
   if(m[1]==='song'){const id=+v;if(state.songs.some(x=>x.id===id))openDetail(id);else toast('공유된 곡을 찾을 수 없어요 (삭제됐을 수 있어요)',true)}
+  else if(m[1]==='playlist'){if(plById(v))openPlaylist(plById(v).id);else toast('공유된 플레이리스트를 찾을 수 없어요',true)}
   else{if(state.profiles[v])openProfilePage(v);else toast('공유된 프로필을 찾을 수 없어요',true)}
 }
 addEventListener('hashchange',openFromHash);
+addEventListener('resize',()=>{if(gi>=0)showStep()});
 
 /* ---------- 이벤트 ---------- */
 document.addEventListener('click',e=>{onClick(e).catch(err=>toast(err.message||String(err),true))});
@@ -2217,7 +2703,26 @@ async function onClick(e){
   if(!e.target.closest('[data-act=userMenu]'))$('#umenu').classList.add('hidden');
   const t=e.target.closest('button,[data-act],[data-shelf],[data-open],[data-close],[data-play],[data-browse],[data-npq],[data-profile]');if(!t)return;
   const d=t.dataset;
+  if(!e.target.closest('#plmenu,[data-addpl]'))$('#plmenu').classList.add('hidden');
   if(d.close) return closeModal(d.close);
+  if(d.tour){return d.tour==='skip'?endGuide(false):guideNav(+d.tour)}
+  if(d.act==='guideReset'){localStorage.removeItem(GUIDE_KEY);const u=API.getUser();if(u)localStorage.removeItem(GUIDE_KEY+'_'+u.id);if(u&&API.resetGuide)await API.resetGuide();toast('다음 접속 때 가이드가 다시 떠요');return renderGrid()}
+  if(d.act==='guide'){$('#umenu').classList.add('hidden');return startGuide()}
+  if(d.addpl){e.stopPropagation();return openPlMenu(t,+d.addpl)}
+  if(d.pltog){e.stopPropagation();$('#plmenu').classList.add('hidden');return plToggleSong(d.pltog,+d.sid)}
+  if(d.act==='newPl'){e.stopPropagation();$('#plmenu').classList.add('hidden');return openPlEditor(null,d.sid?+d.sid:null)}
+  if(d.pl&&!d.plplay){e.stopPropagation();const p=plById(d.pl);return p?openPlaylist(p.id):toast('플레이리스트를 찾을 수 없어요',true)}
+  if(d.plplay){e.stopPropagation();const p=plById(d.plplay);if(!p)return;const l=plSongs(p);if(!l.length)return toast('아직 곡이 없는 플레이리스트예요');state.queue=l.map(x=>x.id);state.ctxName=p.name;state.playingId=null;return play(l[0].id,true)}
+  if(d.act==='plEdit') return openPlEditor(plById(state.playlistId));
+  if(d.act==='plSave') return savePlEditor();
+  if(d.act==='plDel'){const p=plById(plEdit&&plEdit.id!=null&&!$('#plModal').classList.contains('hidden')?plEdit.id:state.playlistId);if(!p)return;if(!confirm(`“${p.name}” 플레이리스트를 삭제할까요? 곡 자체는 지워지지 않아요.`))return;
+    try{await API.deletePlaylist(p.id)}catch(err){return toast(err.message,true)}closeModal('plModal');toast('플레이리스트를 삭제했어요');await loadPlaylists();return setView('all')}
+  if(d.plmv){e.stopPropagation();const p=plById(state.playlistId),sid=+d.sid;if(!p)return;const ids=[...p.song_ids];const i=ids.indexOf(sid),j=i+(+d.plmv);if(i<0||j<0||j>=ids.length)return;[ids[i],ids[j]]=[ids[j],ids[i]];return plSetSongs(p,ids)}
+  if(d.plrm){e.stopPropagation();const p=plById(state.playlistId);if(!p)return;await plSetSongs(p,p.song_ids.filter(x=>x!==+d.plrm));return toast('플레이리스트에서 뺐어요')}
+  if(d.dlt){e.stopPropagation();return dlToggle(+d.dlt,t)}
+  if(d.act==='dlAll') return downloadAll();
+  if(d.act==='dlClear'){if(!confirm('다운로드 리스트를 비울까요? (곡은 지워지지 않아요)'))return;DL.set([]);renderFilters();return renderGrid()}
+  if(d.act==='dlAddAll'){const p=plById(state.playlistId);return dlAdd(p?p.song_ids:visibleSongs().map(x=>x.id))}
   if(d.share){const [k,v]=d.share.split(/:(.*)/);return shareItem(k,v)}
   if(d.profile){e.stopPropagation();$('#umenu').classList.add('hidden');return openProfilePage(d.profile)}
   if(d.pav!==undefined){pe.file=null;pe.avatar_url=d.pav?'preset:'+d.pav:null;return renderPE()}
@@ -2275,7 +2780,7 @@ async function onClick(e){
   try{
     if(d.like&&+d.like<0)return;
     if(d.like){e.stopPropagation();if(needLogin())return;const s=findSong(+d.like);if(!s)return;return toggleLike(s,t)}
-    if(d.dl){const s=findSong(+d.dl);toast('다운로드를 시작해요');return API.download(s)}
+    if(d.dl){e.stopPropagation();const s=findSong(+d.dl);toast('다운로드를 시작해요');return downloadOne(s)}
     if(d.delsong){const s=findSong(+d.delsong);if(!ask(`"${s.title}" 추천을 삭제할까요? 리뷰도 함께 사라져요.`))return;
       if(state.playingId===s.id) stopPlayer();await API.deleteSong(s);closeModal('detailModal');toast('삭제했어요');return refresh()}
     if(d.delrev){if(!ask('내 리뷰를 삭제할까요?'))return;await API.deleteReview(+d.delrev);state.form=null;toast('리뷰를 삭제했어요');return refresh()}
@@ -2283,6 +2788,7 @@ async function onClick(e){
 }
 $('#aSubmit').onclick=submitAuth;
 $('#authModal').addEventListener('keydown',e=>{if(e.key==='Enter')submitAuth()});
+$('#plModal').addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.id==='plName')savePlEditor()});
 $('#pSave').onclick=saveProfile;
 $('#pPhotoBtn').onclick=()=>$('#pPhoto').click();
 $('#pPhoto').addEventListener('change',e=>{const f=e.target.files[0];e.target.value='';if(!f)return;if(!f.type.startsWith('image/'))return toast('이미지 파일만 올릴 수 있어요',true);
@@ -2345,7 +2851,8 @@ document.addEventListener('keydown',e=>{
   if(k==='/'){e.preventDefault();return $('#search').focus()}
 });
 document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.matches&&e.target.matches('[data-open][tabindex],[data-browse][tabindex],[data-npq][tabindex]')){e.preventDefault();e.target.click()}});
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){$('#umenu').classList.add('hidden');if(document.body.classList.contains('bigvideo'))return document.body.classList.remove('bigvideo');$$('.modal:not(.hidden)').forEach(m=>closeModal(m.id))}});
+document.addEventListener('keydown',e=>{if(gi>=0){if(e.key==='Escape')endGuide(false);else if(e.key==='ArrowRight'||e.key==='Enter'){e.preventDefault();guideNav(1)}else if(e.key==='ArrowLeft'){e.preventDefault();guideNav(-1)}e.stopImmediatePropagation();return}},true);
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){$('#plmenu').classList.add('hidden');$('#umenu').classList.add('hidden');if(document.body.classList.contains('bigvideo'))return document.body.classList.remove('bigvideo');$$('.modal:not(.hidden)').forEach(m=>closeModal(m.id))}});
 $$('.modal').forEach(m=>m.addEventListener('mousedown',e=>{if(e.target===m&&m.id!=='detailModal')closeModal(m.id)}));
 addEventListener('resize',()=>{applyRight();document.body.style.setProperty('--mtop',$('.topbar').offsetHeight+'px')});
 document.body.style.setProperty('--mtop',$('.topbar').offsetHeight+'px');
@@ -2396,6 +2903,7 @@ function runIntro(){
   API=(online&&window.supabase)?makeSupabaseBackend():makeLocalBackend();
   try{await API.init()}catch(e){toast('로그인 정보 확인 실패: '+e.message,true)}
   await refresh();if(S.startView!=='all'){state.view=S.startView;renderFilters();renderGrid()}pushHist();openFromHash();
+  if(!guideSeen()&&!location.hash){const go=()=>{if(!$('#intro'))setTimeout(()=>{if(gi<0&&!guideSeen())startGuide()},400);else setTimeout(go,300)};go()}
   // 온라인 모드: 30초마다 새 글 확인
   if(API.mode==='online'){setInterval(()=>{if(document.visibilityState==='visible'&&!$$('.modal:not(.hidden):not(#detailModal)').length)refresh(false)},30000);
     document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')refresh(false)})}
